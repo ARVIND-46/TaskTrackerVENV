@@ -1,0 +1,17 @@
+<!-- polls/templates/polls/task_list.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task List</title>
+    <link rel="stylesheet" href="{% static 'app1/styles.css' %}">
+
+</head>
+<body>
+    <h1>Welcome to the Task List</h1>
+    <p>Here is a list of tasks.</p>
+   <a href="{% url 'add_task' %}">ADD TASK</a> <br>
+   <a href="{% url 'displayTL' %}">Display TASK</a>
+</body>
+</html>
