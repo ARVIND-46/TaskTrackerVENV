@@ -67,18 +67,18 @@ def delTask(request,task_id):
         return redirect('display_tasks')
 
 def generatePieChart(request):
-    totalTask = Task.objects.count()
+   # totalTask = Task.objects.count()
     complete_Task = Task.objects.filter(is_completed =True).count()
     pending_Task = Task.objects.filter(is_completed = False).count()
     
     labels =['Complete','Pending']
-    sizes = [complete_Task,pending_Task]
+    status = [complete_Task,pending_Task]
     colors =['red','green']
     explode = (0.1, 0)  # Highlight the completed section
 
     # Step 3: Create the pie chart
     fig, ax = plt.subplots()
-    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors, explode=explode)
+    ax.pie(status, labels=labels, startangle=90,colors=colors, explode=explode)
     ax.axis('equal')  # Ensure the pie chart is a circle
 
     # Step 4: Save the chart to a buffer
@@ -92,7 +92,7 @@ def generatePieChart(request):
     graphic = base64.b64encode(image_png).decode('utf-8')
 
     # Step 6: Pass the chart to the template
-    return render(request, 'app1/pieChart.html', {'chart': graphic})
+    return HttpResponse(request, 'app1/pieChart.html', {'chart': graphic})
 
 
     
