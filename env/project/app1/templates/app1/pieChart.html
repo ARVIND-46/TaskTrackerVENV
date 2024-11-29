@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Completion Pie Chart</title>
+</head>
+<body>
+    <h1>Task Completion Status</h1>
+    <div>
+        <img src="data:image/png;base64,{{ chart }}" alt="Task Completion Pie Chart">
+    </div>
+    <a href="{% url 'display_tasks' %}">Back to Task List</a>
+</body>
+</html>

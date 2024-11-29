@@ -2,6 +2,10 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse 
 from .models import Task 
 from django.contrib.auth.decorators import login_required
+import matplotlib.pyplot as plt
+import numpy as np
+from io import BytesIO
+import base64
 
 
 # Create your views here.
@@ -61,6 +65,35 @@ def delTask(request,task_id):
         task =get_object_or_404(Task,id=task_id)
         task.delete()
         return redirect('display_tasks')
+
+def generatePieChart(request):
+    totalTask = Task.objects.count()
+    complete_Task = Task.objects.filter(is_completed =True).count()
+    pending_Task = Task.objects.filter(is_completed = False).count()
+    
+    labels =['Complete','Pending']
+    sizes = [complete_Task,pending_Task]
+    colors =['red','green']
+    explode = (0.1, 0)  # Highlight the completed section
+
+    # Step 3: Create the pie chart
+    fig, ax = plt.subplots()
+    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors, explode=explode)
+    ax.axis('equal')  # Ensure the pie chart is a circle
+
+    # Step 4: Save the chart to a buffer
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+
+    # Step 5: Encode the image to base64
+    graphic = base64.b64encode(image_png).decode('utf-8')
+
+    # Step 6: Pass the chart to the template
+    return render(request, 'app1/pieChart.html', {'chart': graphic})
+
 
     
 
